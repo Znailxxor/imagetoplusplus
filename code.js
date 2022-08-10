@@ -375,7 +375,7 @@ function generateLevel() {
     // Map Tiles
     for (var y = 0; y < gridHeight; y++) {
         for (var x = 0; x < gridWidth; x++) {
-            mapArray[0xB8 + x + (y * defaultGridWidth)] = parseInt(tileMap[x][y]);
+            mapArray[0xB8 + x + (y * defaultGridWidth)] = parseInt(tileMap[x][y], 16);
         }
     }
     return mapArray;
