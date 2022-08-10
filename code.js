@@ -78,7 +78,6 @@ function updateImageSrc(e) {
     renderImage = new Image();
     renderImage.src = URL.createObjectURL(e.target.files[0]);
     renderImage.onload = reRenderCanvases;
-    console.log(e.target.files[0])
     let name = e.target.files[0].name;
     name = name.replace(/\.[^/.]+$/, "");
     document.getElementById("mapName").value = name;
@@ -121,7 +120,6 @@ function loadSettings() {
     for (const previewSetting of previewSettings) {
         loadSetting(previewSetting);
     }
-    console.log(settings);
 }
 
 function reRenderCanvases() {
@@ -391,7 +389,6 @@ function downloadLevel() {
         name = "untitled image level";
     }
     link.download = name;
-    console.log(link.download);
     link.click();
 }
 
