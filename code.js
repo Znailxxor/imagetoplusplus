@@ -79,7 +79,9 @@ function updateImageSrc(e) {
     renderImage.src = URL.createObjectURL(e.target.files[0]);
     renderImage.onload = reRenderCanvases;
     console.log(e.target.files[0])
-    document.getElementById("mapName").value = e.target.files[0].name;
+    let name = e.target.files[0].name;
+    name = name.replace(/\.[^/.]+$/, "");
+    document.getElementById("mapName").value = name;
 }
 
 function resizeCanvas() {
