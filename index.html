@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css"/>
+    </head>
+    <body>
+        <div id="pageContainer" style="height: 100%; display: flex;">
+            <div id="controls" style="width: 33%; height: 100%; overflow-y: scroll;">
+				<fieldset>
+					<legend>Input</legend>
+					Image has to be either a .png or a .jpg, but can be any size (within reason).<br>
+					<input type="file" id="imageInput" name="imageInput"
+						accept="image/png, image/jpeg">
+				</fieldset>
+				<fieldset>
+					<legend>Modify Image</legend>
+					<fieldset>
+						<legend>Rotation</legend>
+						<input type="range" class="renderSettings" id="rotationSlider" name="rotation" value="0" min="-180" max="180" oninput="this.nextElementSibling.value = this.value">
+						<input type="number" class="renderSettings" id="rotation" name="rotation" value="0" min="-1080" max="1080" onchange="this.value = ((539 + Number(this.value)) % 360) - 179; this.previousElementSibling.value = this.value">&deg;
+					</fieldset>
+					<fieldset>
+						<legend>Scale</legend>
+						<input type="range" class="renderSettings" id="scaleSlider" name="scale" value="100" min="0" max="400" oninput="this.nextElementSibling.value = this.value">
+						<input type="number" class="renderSettings" id="scale" name="scale" value="100" min="0" max="10000" onchange="this.previousElementSibling.value = this.value">%
+					</fieldset>
+					<fieldset>
+						<legend>X Position</legend>
+						<label for="xOffset">Offset (Squares):</label>
+						<input type="number" class="renderSettings" id="xOffset" name="xOffset" value="0">
+						<input type="button" class="renderSettingsUpdater" name="xMinus" value="&larr;" onclick="document.getElementById('xOffset').value = + document.getElementById('xOffset').value - 1">
+						<input type="button" class="renderSettingsUpdater" name="xPlus" value="&rarr;" onclick="document.getElementById('xOffset').value = + document.getElementById('xOffset').value + 1">
+						<br>
+						<label for="xAdjust">Fine adjust</label>
+						<input type="range" class="renderSettings" id="xAdjustSlider" name="xAdjust" value="0" min="-1" max="1" step="0.02" oninput="document.getElementById('xAdjust').value = this.value">
+						<input type="number" class="renderSettings" id="xAdjust" name="xAdjust" value="0" min="-1" max="1" step="0.02" oninput="document.getElementById('xAdjustSlider').value = this.value">
+					</fieldset>
+					<fieldset>
+						<legend>Y Position</legend>
+						<label for="yOffset">Offset (Squares):</label>
+						<input type="number" class="renderSettings" id="yOffset" name="yOffset" value="0">
+						<input type="button" class="renderSettingsUpdater" name="yMinus" value="&uarr;" onclick="document.getElementById('yOffset').value = + document.getElementById('yOffset').value - 1">
+						<input type="button" class="renderSettingsUpdater" name="yPlus" value="&darr;" onclick="document.getElementById('yOffset').value = + document.getElementById('yOffset').value + 1">
+						<br>
+						<label for="yAdjust">Fine adjust</label>
+						<input type="range" class="renderSettings" id="yAdjustSlider" name="yAdjust" value="0" min="-1" max="1" step="0.02" oninput="this.nextElementSibling.value = this.value">
+						<input type="number" class="renderSettings" id="yAdjust" name="yAdjust" value="0" min="-1" max="1" step="0.02" oninput="this.previousElementSibling.value = this.value">
+					</fieldset>
+					 <!-- TODO: "Fit", "Span" -->
+				</fieldset>
+				<fieldset>
+					<legend>Lightness Breakpoint</legend>
+					Determines what level of lightness is considered to be an open space.<br>
+					At 0 everything is an open space, at 255 nothing is.<br>
+					<input type="range" class="renderSettings" id="lightnessSlider" name="lightnessSlider" value="127" min="0" max="255" oninput="this.nextElementSibling.value = this.value">
+					<input type="number" class="renderSettings" id="lightnessBox" name="lightnessBox" value="127" min="0" max="255" oninput="this.previousElementSibling.value = this.value">
+					<br>
+					<input type="checkbox" class="renderSettings" id="invert" name="invert">
+					<label for="invert">Invert</label>
+					<input type="checkbox" class="renderSettings" id="fill" name="fill">
+					<label for="fill">Fill Background</label>
+				</fieldset>
+				<fieldset>
+					<legend>Tile Processing Quality</legend>
+					<label for="lowQuality">Fast</label>
+					<input type="radio" class="renderSettings" id="lowQuality" name="quality" value="low">
+					<input type="radio" class="renderSettings" id="midQuality" name="quality" value="mid">
+					<input type="radio" class="renderSettings" id="fullQuality" name="quality" value="full" checked>
+					<label for="fullQuality">Accurate</label>
+					<br>
+					<input type="checkbox" class="renderSettings" id="disableTileProcessing" name="disableTileProcessing">
+					<label for="disableTileProcessing">Disable Tile Processing</label>
+				</fieldset>
+				<fieldset>
+					<legend>Grid Size</legend>
+					<table>
+						<tr>
+							<td>
+								<label for="gridWidth">Width</label>
+							</td>
+							<td>
+								<input type="number" class="gridSettings" id="gridWidth" name="gridWidth" value="42" min="1" max="42">
+								(1-42)
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="gridWidth">Height</label>
+							</td>
+							<td>
+								<input type="number" class="gridSettings" id="gridHeight" name="gridHeight" value="23" min="1" max="23">
+								(1-23)
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>Output</legend>
+					<label for="mapName">Name:</label>
+					<input type="text" id="mapName" name="mapName" placeholder="untitled image map">
+					<input type="button" id="download" name="download" value="Download Map">
+				</fieldset>
+            </div>
+			<div id="preview" style="display: flex;
+				flex-direction: column; align-items: center; justify-content: center;">
+	            <div id="canvasContainer" style="text-align: center;">
+	                <canvas id="imageCanvas" width="420" height="230" style="border: solid;"></canvas>
+	                <canvas id="processingCanvas" width="420" height="230" hidden></canvas>
+	                <canvas id="loadingCanvas" width="1496" height="44" hidden></canvas>
+	            </div>
+	            <div id="canvasControls" style="text-align: center;">
+					<fieldset>
+						<legend>Display Controls</legend>
+		                <input class="previewSettings" type="checkbox"
+		                    id="showGrid" name="showGrid" checked>
+		                <label for="showGrid"> Grid</label>
+		                <input class="previewSettings" type="checkbox"
+		                    id="showContrast" name="showContrast" checked>
+		                <label for="showContrast"> Contrast</label>
+		                <input class="previewSettings" type="checkbox"
+		                    id="showTiles" name="showTiles">
+		                <label for="showTiles"> Tiles</label>
+					</fieldset>
+	            </div>
+			</div>
+        </div>
+        <script src="data.js" charset="utf-8"></script>
+        <script src="code.js" charset="utf-8"></script>
+    </body>
+</html>
